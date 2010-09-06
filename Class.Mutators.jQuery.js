@@ -33,15 +33,11 @@ Class.Mutators.jQuery = function(name){
     } else {
       if (instance) return instance;
 
-      // If the selector returns many results instantiate for each
-      if(this.length > 0){
-        this.each(function(i, e){
-          // Send the jquery object itself since we can use o.selector
-          this.data(name, new self($(e), arg));
-        }.bind(this));
-      } else {
-        this.data(name, new self(this, this, arg));
-      }
+      // instantiate a new object for each selector match
+      this.each(function(i, e){
+        // Send the jquery object itself since we can use o.selector
+        this.data(name, new self($(e), arg));
+      }.bind(this));
     }
     return this;
   };
