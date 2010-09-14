@@ -40,19 +40,24 @@ Class.Mutators.jQuery = function(name){
     // if calling a method on the objects broadcast the call
     if ($type(arg) == 'string'){
       $(document).trigger(event, arguments);
-    } else { // otherwise instantiate where necessary
-      if (this.data(name)) return this.data(name);
 
+      // NOTE may be worthwhile returning this.data(name) here as
+      // as substitute for return values (objects + mutated state)
+    } else {
+      if (this.data(name)) return this.data(name);
       this.data(name, []);
+
       // instantiate a new object for each selector match
       this.each(function(i, e){
-        // Send the jquery object itself since we can use o.selector
+        // send the jquery object itself since we can use o.selector
         var new_instance = new self($(e), arg);
+
+        // bind to the name specific document event for later broadcast
         $(document).bind(event, { instance: new_instance }, send);
         this.data(name).push(new_instance);
       }.bind(this));
-
-      return this;
     }
+
+    return this;
   };
 };
