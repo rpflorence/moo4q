@@ -26,25 +26,23 @@ Class.Mutators.jQuery = function(name){
               property = instance[arg],
               additional_args = Array.slice(arguments, 2);
 
-          if ($type(property) == 'function'){
-            var returns = propery.apply(instance, additional_args);
-            return (returns == instance) ? this : returns;
-          } else if (arguments.length == 0){
-            return prop;
-          }
+          if ($type(property) == 'function')
+            return property.apply(instance, additional_args);
+
+          if (additional_args.length == 0)
+            return;
 
           // set the property if nothing else
-          instance[arg] = arguments[1];
+          instance[arg] = arguments[2];
         }.bind(this);
 
     // if calling a method on the objects broadcast the call
     if ($type(arg) == 'string'){
-      $(document).trigger(event, arguments);
-
-      // NOTE may be worthwhile returning this.data(name) here as
-      // as substitute for return values (objects + mutated state)
+      $(this).trigger(event, arguments);
+      return this.data(name);
     } else {
       if (this.data(name)) return this.data(name);
+
       this.data(name, []);
 
       // instantiate a new object for each selector match
@@ -53,7 +51,8 @@ Class.Mutators.jQuery = function(name){
         var new_instance = new self($(e), arg);
 
         // bind to the name specific document event for later broadcast
-        $(document).bind(event, { instance: new_instance }, send);
+        $(e).unbind(event);
+        $(e).bind(event, { instance: new_instance }, send);
         this.data(name).push(new_instance);
       }.bind(this));
     }
