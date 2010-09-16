@@ -34,7 +34,7 @@ Class.Mutators.jQuery = function(name){
 
           // set the property if nothing else
           instance[arg] = arguments[2];
-        }.bind(this);
+        };
 
     // if calling a method on the objects broadcast the call
     if ($type(arg) == 'string'){

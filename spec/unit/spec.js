@@ -28,11 +28,10 @@ describe('Class.Mutators.jQuery', function(){
       });
 
       it('should broadcast the method to all instances with arguments', function(){
-        var mock = {},
-            count = divs_fixture.find('div').length;
-        expect(proxy).to(receive, 'method', count).with_args(mock);
+        var count = divs_fixture.find('div').length;
+        expect(proxy).to(receive, 'method', count).with_args('bar');
         divs_fixture.find('div').foo();
-        divs_fixture.find('div').foo('method', mock);
+        divs_fixture.find('div').foo('method', 'bar');
       });
     });
   });
