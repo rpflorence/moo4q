@@ -26,7 +26,7 @@ Alternatively you can use jQueryEach to instantiate an instance of your mootools
       jQueryEach: 'fake',
 
       initialize: function(match, options){
-
+        //do stuff
       }
 
     });
@@ -87,7 +87,7 @@ Useless Example Class
 
 In this example using jQueryEach simplifies your initializer.
 
-      jQueryEach: 'person', // must be after options definition
+      jQueryEach: 'person',
 
       initialize: function(object, options){
         this.setOptions(options);
@@ -128,3 +128,12 @@ Moo4q uses MooTools to fill in where jQuery leaves off.  MooTools is modular and
 ### Moo4q &lt;3 jQuery Syntax
 
 Part of what makes moo4q so cool is a bit of code (the jQuery mutator) that automagically turns your MooTools Class into a jQuery plugin, making your objects accessible through familiar jQuery syntax.  It follows jQuery patterns for setting and getting values, instantiating stuff, and chaining.  Of course, you can still use your classes as regular JavaScript objects if you prefer, up to you.  Check out the <a href="http://moo4q.com">website for more information</a>.
+
+Tests
+-----
+
+Running the test suite is as simple as issuing the following command
+
+    $ firefox spec/dom.html
+
+Only firefox has been tested, and chrome has some issues with loading local files in a dynamic manner which prevents testing with it.
