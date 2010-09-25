@@ -2,6 +2,7 @@ describe('Class.Mutators.jQueryEach', function(){
   before_each(function(){
     //NOTE See spec.helper.js for test class
     JSpec.defaultContext.divs_fixture = jQuery(fixture('divs'));
+    JSpec.defaultContext.div_count = divs_fixture.find('div').length;
     JSpec.defaultContext.proxy = {
       initialize: function(e){},
       method: function(e){}
@@ -10,16 +11,19 @@ describe('Class.Mutators.jQueryEach', function(){
 
   describe('moo4q each classes', function(){
     it('should instiate many times', function(){
-      var div_count = divs_fixture.find('div').length;
       expect(proxy)
-        .to(receive, 'initialize', div_count)
-        .with_args(an_instance_of(Object));
+        .to(receive, 'initialize', div_count);
       divs_fixture.find('div').foo();
     });
 
     it('should receive one object as the first argument to the init', function(){
+      JSpec.defaultContext.proxy.initialize = function(e){
+        // TODO find better way to identify jquery object
+        e.should.respond_to('find');
+      };
+
       expect(proxy)
-        .to(receive, 'initialize', 'once').with_args(an_instance_of(Object));
+        .to(receive, 'initialize', 'once');
       divs_fixture.find('div.foo').foo();
     });
 
