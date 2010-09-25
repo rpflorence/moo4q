@@ -1,5 +1,6 @@
-describe('Class.Mutators.jQuery', function(){
+describe('Class.Mutators.jQueryEach', function(){
   before_each(function(){
+    //NOTE See spec.helper.js for test class
     JSpec.defaultContext.divs_fixture = jQuery(fixture('divs'));
     JSpec.defaultContext.proxy = {
       initialize: function(e){},
@@ -7,14 +8,18 @@ describe('Class.Mutators.jQuery', function(){
     };
   });
 
-  describe('moo4q classes', function(){
+  describe('moo4q each classes', function(){
     it('should instiate many times', function(){
-      expect(proxy).to(receive, 'initialize', 'twice').with_args(an_instance_of(Object));
+      var div_count = divs_fixture.find('div').length;
+      expect(proxy)
+        .to(receive, 'initialize', div_count)
+        .with_args(an_instance_of(Object));
       divs_fixture.find('div').foo();
     });
 
-    it('should receive one jquery object as the first argument to the init', function(){
-      expect(proxy).to(receive, 'initialize', 'once').with_args(an_instance_of(Object));
+    it('should receive one object as the first argument to the init', function(){
+      expect(proxy)
+        .to(receive, 'initialize', 'once').with_args(an_instance_of(Object));
       divs_fixture.find('div.foo').foo();
     });
 
@@ -34,5 +39,35 @@ describe('Class.Mutators.jQuery', function(){
         divs_fixture.find('div').foo('method', 'bar');
       });
     });
+  });
+});
+
+describe('Class.Mutators.jQuery', function(){
+  before_each(function(){
+    //NOTE See spec.helper.js for test class
+    JSpec.defaultContext.divs_fixture = jQuery(fixture('divs'));
+    JSpec.defaultContext.proxy = {
+      initialize: function(e){},
+      method: function(e){}
+    };
+  });
+
+  it('should instantiate one intance', function(){
+    expect(proxy).to(receive, 'initialize', 'once').with_args('div');
+    divs_fixture.find('div').bar();
+    divs_fixture.find('div').bar('method');
+    divs_fixture.find('div').bar('method', 'fizzle');
+  });
+
+  it('should call a method without args', function(){
+    expect(proxy).to(receive, 'method', 'once');
+    divs_fixture.find('div').bar();
+    divs_fixture.find('div').bar('method');
+  });
+
+  it('should call a method with args', function(){
+    expect(proxy).to(receive, 'method', 'once').with_args('fizzle');
+    divs_fixture.find('div').bar();
+    divs_fixture.find('div').bar('method', 'fizzle');
   });
 });
