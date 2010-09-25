@@ -7,14 +7,26 @@ Include all three files into your document
     <script src="mootools-1.2.4-base.js"></script>
     <script src="Class.Mutators.jQuery.js"></script>
 
-Add a jQuery prototype method name to your class and a selector and options as the only arguments to the initialize method:
+Add a jQuery prototype method name to your class and a selector and options as the arguments to the initialize method:
 
     var Fake = new Class({
-      
+
       jQuery: 'fake'
-      
+
       initialize: function(selector, options){
         // do stuff
+      }
+
+    });
+
+Alternatively you can use jQueryEach to instantiate an instance of your mootools class with each element matching your jQuery selector as the first argument.
+
+    var Fake = new Class({
+
+      jQueryEach: 'fake',
+
+      initialize: function(match, options){
+
       }
 
     });
@@ -27,28 +39,29 @@ Useless Example Class
 ### A Person class
 
     var Person = new Class({
-      
-      Implements: Options, 
-    	
+
+      Implements: Options,
+
       options: {
     	  height: 'tall',
     	  weight: 'fat'
       },
-      
+
       jQuery: 'person', // must be after options definition
-      
+
       awesome: true,
-      
+
       initialize: function(selector, options){
         this.setOptions(options);
         this.jqueryObject = jQuery(selector);
+
       },
-    	
+
       dance: function(whichDance){
         alert(whichDance);
         return this;
       }
-    
+
     });
 
 ### Usage
@@ -69,12 +82,32 @@ Useless Example Class
                                   // method doesn't return the instance, it returns a value
     $('#dude').persons('awesome', false); // reassign the property
 
+
+### With jQueryEach
+
+In this example using jQueryEach simplifies your initializer.
+
+      jQueryEach: 'person', // must be after options definition
+
+      initialize: function(object, options){
+        this.setOptions(options);
+        this.jqueryObject = object;
+      }
+
+In addition it will broadcast the method call so in the previous example if you had wanted all the bobs:
+
+    $('.bobs').person('dance', 'salsa');
+
+Dancing the salsa no longer returns the the jQuery object, but rather it asks all the Bobs
+to dance and returns them in their, possibly mutated, form. Otherwise setting properties and
+intantiation behave as you would expect.
+
 Why?
 ----
 
 ### jQuery &lt;3 the DOM
 
-jQuery is awesome but it's scope is (generally) limited to the DOM.  While the API is clear and simple to use, for large applications it can lead to code that is difficult to maintain and dangerously bound to your document's HTML.  Note that jQuery is not doing anything wrong, it simply makes no attempt to help you organize your code.  
+jQuery is awesome but it's scope is (generally) limited to the DOM.  While the API is clear and simple to use, for large applications it can lead to code that is difficult to maintain and dangerously bound to your document's HTML.  Note that jQuery is not doing anything wrong, it simply makes no attempt to help you organize your code.
 
 ### Immutable Functions #ftl
 
