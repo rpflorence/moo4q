@@ -57,7 +57,7 @@ Class.Mutators.jQueryEach = function(name){
       }.bind(this));
     }
 
-    return this;
+    return this.data(name);
   };
 };
 
